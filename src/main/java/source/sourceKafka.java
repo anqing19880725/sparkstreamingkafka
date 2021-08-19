@@ -45,15 +45,7 @@ public class sourceKafka {
         kafkaParams.put("auto.offset.reset", "latest");
         kafkaParams.put("enable.auto.commit", false);
 
-        JavaInputDStream<ConsumerRecord<String, String>> messages  = KafkaUtils.createDirectStream(javaStreamingContext, LocationStrategies.PreferConsistent(), ConsumerStrategies.Subscribe(topicsSet, kafkaParams));
-		
-		messages.print();
-		
-		
-		javaStreamingContext.start();
-        javaStreamingContext.awaitTermination();
-        javaStreamingContext.close();
-		
+        JavaInputDStream<ConsumerRecord<Object, Object>> messages  = KafkaUtils.createDirectStream(javaStreamingContext, LocationStrategies.PreferConsistent(), ConsumerStrategies.Subscribe(topicsSet, kafkaParams));
 
 
     }
