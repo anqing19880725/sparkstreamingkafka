@@ -1,17 +1,26 @@
 package source;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaSparkContext;
+import org.apache.spark.api.java.function.Function;
+import org.apache.spark.api.java.function.Function2;
+import org.apache.spark.api.java.function.PairFunction;
 import org.apache.spark.streaming.Durations;
-import org.apache.spark.streaming.api.java.JavaInputDStream;
-import org.apache.spark.streaming.api.java.JavaStreamingContext;
+import org.apache.spark.streaming.api.java.*;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.apache.spark.streaming.dstream.InputDStream;
 import org.apache.spark.streaming.kafka010.ConsumerStrategies;
 import org.apache.spark.streaming.kafka010.KafkaUtils;
 import org.apache.spark.streaming.kafka010.LocationStrategies;
+import pojo.JsonRootBean;
+import scala.Tuple2;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.*;
 
 public class sourceKafka {
@@ -45,7 +54,17 @@ public class sourceKafka {
         kafkaParams.put("auto.offset.reset", "latest");
         kafkaParams.put("enable.auto.commit", false);
 
-        JavaInputDStream<ConsumerRecord<Object, Object>> messages  = KafkaUtils.createDirectStream(javaStreamingContext, LocationStrategies.PreferConsistent(), ConsumerStrategies.Subscribe(topicsSet, kafkaParams));
+        List<JavaPairReceiverInputDStream<String, String>> streams = new ArrayList<JavaPairReceiverInputDStream<String, String>>();
+        JavaInputDStream<ConsumerRecord<String, String>> messages  = KafkaUtils.createDirectStream(javaStreamingContext, LocationStrategies.PreferConsistent(), ConsumerStrategies.Subscribe(topicsSet, kafkaParams));
+
+        JavaDStream<Object> map = messages.map(new Function<ConsumerRecord<String, String>, Object>() {
+            @Override
+            public Object call(ConsumerRecord<String, String> stringStringConsumerRecord) throws Exception {
+                return stringStringConsumerRecord.toString();
+            }
+        });
+
+
 
 
     }

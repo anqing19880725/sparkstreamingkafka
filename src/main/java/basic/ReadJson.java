@@ -24,13 +24,8 @@ public class ReadJson {
                 JsonRootBean jsonRootBean = JSON.toJavaObject(jsonObject, JsonRootBean.class);
                 System.out.println("jsonRootBean = " + jsonRootBean);
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
-
-
 }
