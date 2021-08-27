@@ -7,6 +7,7 @@ import pojo.JsonRootBean;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +17,7 @@ public class ReadJson {
 
         String jsonPath = "src/main/resources/Json";
         try {
+//            InputStreamReader inputStreamReader = new InputStreamReader();
             FileReader fileReader = new FileReader(jsonPath);
             BufferedReader br = new BufferedReader(fileReader);
             String line = null;
